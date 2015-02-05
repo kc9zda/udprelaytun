@@ -1,0 +1,19 @@
+Protocol:
+
+	The planned protocol is to have a UDP datagram for each packet 
+received from the TUN device ( see https://github.com/kc9zda/cattun ). This
+program will use the cattun program (see above). The program will send traffic
+to the last address:port it has heard a specific byte from (see Pairing). 
+Until it receives the special pairing byte, it will silently drop all packets
+that it receives. UDP datagrams received on a port other than the one paired
+with will also be silently dropped.
+
+Pairing:
+
+	To pair with the program, all one needs to do is send a one byte 
+datagram to the UDP port passed to the program. The byte to pair is 0x9F. The 
+program will respond with the byte 0xA8.
+
+Arguments:
+
+	usage: udprelaytun <tun dev name> <udp port>
