@@ -16,4 +16,6 @@ program will respond with the byte 0xA8.
 
 Arguments:
 
-	usage: udprelaytun <tun dev name> <udp port>
+	usage: udprelaytun <tun dev name> <udp port> <cattun location>
+
+	example: udprelaytun tun99 12345 ../cattun
