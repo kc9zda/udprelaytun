@@ -20,18 +20,21 @@ void relay_from_udp(void) {
 	struct sockaddr from;
 	int from_len;
 
+	recvlen = recvfrom(udpfd,buf,1500,0,&from,&from_len);
+	if (recvlen == 1 && buf[0] == 0x9f) {
+		memset(&buf,0,1500);
+		buf[0] = 0xa8;
+		memcpy(&client_addr, &from, from_len);
+		client_addr_len = from_len;
+		sendto(udpfd,buf,1,0,&client_addr,client_addr_len);
+		paired = 1;
+		printf("paired with client");
+		}
 	if (paired != 0) {
-		recvlen = recvfrom(udpfd,buf,1500,0,&from,&from_len);
-		if (recvlen == 1 && buf[0] == 0x9f) {
-			memset(&buf,0,1500);
-			buf[0] = 0xa8;
-			memcpy(&client_addr, &from, from_len);
-			client_addr_len = from_len;
-			sendto(udpfd,buf,1,0,&client_addr,client_addr_len);
-			}
 		if (sockaddrcmp(&client_addr,client_addr_len,&from,from_len)) {
 			write(PARENT_WRITE,&recvlen,sizeof(int));
 			write(PARENT_WRITE,buf,recvlen);
+			printf("recvd frame from UDP: %d bytes", recvlen);
 			}
 		}
 	}

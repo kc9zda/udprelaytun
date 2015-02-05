@@ -57,7 +57,7 @@ int parent_main() {
 		perror("cannot create udp server socket");
 		return -1;
 		}
-	// TODO: set socket to non blocking
+	fcntl(udpfd, F_SETFL, O_NONBLOCK);
 	while (udpfd != -1) {
 		relay_from_tun();
 		relay_from_udp();
